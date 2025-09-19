@@ -1,0 +1,56 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Build output
+/.next
+/out
+/build
+/dist
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Coverage
+/coverage
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Misc
+.DS_Store
+Thumbs.db
+*.pem
+*.map
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Service worker
+/public/sw.js
+/public/workbox-*.js
+/public/sw.js.map
+
+# Vercel
+.vercel
+
+# Editor settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Docker (optional, remove if not used)
+docker-compose.yml
+Dockerfile
+.dockerignore
