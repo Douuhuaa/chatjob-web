@@ -6,23 +6,23 @@ import { defineConfig } from "eslint/config";
 import prettierPlugin from "eslint-plugin-prettier";
 
 export default defineConfig([
-  {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
-    plugins: {
-      js,
-      prettier: prettierPlugin,
+    {
+        files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+        plugins: {
+            js,
+            prettier: prettierPlugin,
+        },
+        rules: {
+            "prettier/prettier": "error",
+        },
+        extends: ["js/recommended"],
+        languageOptions: {
+            globals: {
+                ...globals.browser,
+                ...globals.node,
+            },
+        },
     },
-    rules: {
-      "prettier/prettier": "error",
-    },
-    extends: ["js/recommended"],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-    },
-  },
-  tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
+    tseslint.configs.recommended,
+    pluginReact.configs.flat.recommended,
 ]);

@@ -5,28 +5,28 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
-  -webkit-text-size-adjust: none;
-  text-size-adjust: none;
+    box-sizing: border-box;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
 }
 
 html,
 body {
-  @apply h-full;
+    @apply h-full;
 }
 
 body {
-  @apply min-h-screen bg-gradient-to-b from-white to-teal-50;
+    @apply min-h-screen bg-gradient-to-b from-white to-teal-50;
 }
 
 a {
-  text-decoration: none;
-  color: inherit;
+    text-decoration: none;
+    color: inherit;
 }
 
 ul,
 ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
