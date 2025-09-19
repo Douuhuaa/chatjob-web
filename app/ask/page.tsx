@@ -1,3 +1,10 @@
+import SidePanel from "../components/SidePanel";
+
 export default function AskPage() {
-  return <h1>Ask Page</h1>;
+  return (
+    <div className="flex h-full">
+      <SidePanel />
+      <h1>Ask Page</h1>
+    </div>
+  );
 }
