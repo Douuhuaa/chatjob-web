@@ -1,4 +1,4 @@
-import SidePanel from "../components/SidePanel";
+import SidePanel from "../components/side-panel";
 
 export default function AskPage() {
     return (
