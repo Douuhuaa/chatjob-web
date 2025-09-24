@@ -13,7 +13,7 @@ export default function QuestionLayout(props: LayoutProps) {
                 <UserMenu />
             </div>
 
-            <div className="flex flex-1">{props.children}</div>
+            <div className="flex flex-1 justify-center">{props.children}</div>
         </div>
     );
 }
