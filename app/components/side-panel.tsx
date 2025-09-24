@@ -8,16 +8,16 @@ import Logo from "./icons/logo.svg";
 import ShareIcon from "./icons/share.svg";
 
 const navLinks = [
-  {
-    label: "提問",
-    href: "/ask",
-    icon: AskIcon,
-  },
-  {
-    label: "分享面試心得",
-    href: "/share",
-    icon: ShareIcon,
-  },
+    {
+        label: "提問",
+        href: "/ask",
+        icon: AskIcon,
+    },
+    {
+        label: "分享面試心得",
+        href: "/share",
+        icon: ShareIcon,
+    },
 ];
 
 export default function SidePanel() {
@@ -27,7 +27,7 @@ export default function SidePanel() {
         <div className="flex h-full w-[260px] flex-col rounded-2xl bg-white px-5 py-4 shadow-lg">
             <Link href="/" className="mb-10 flex items-center gap-2 text-gray-700">
                 <Logo />
-                <p className="text-base">ChatJOB</p>
+                <span className="text-base">ChatJOB</span>
             </Link>
 
             <nav className="flex flex-col gap-1">
@@ -51,6 +51,7 @@ export default function SidePanel() {
             </nav>
 
             <div className="mt-auto flex items-center gap-2 rounded-full border border-gray-100 bg-gray-50 px-2 py-1.5">
+                {/* TODO:Oauth登入、註冊完成後，把這裡改成google的使用者資料 */}
                 <div className="h-8 w-8 rounded-full bg-gray-200 text-white"></div>
                 <div>
                     <p className="text-sm font-medium text-gray-600">Tina Chiu</p>
