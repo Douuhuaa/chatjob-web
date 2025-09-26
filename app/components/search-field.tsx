@@ -70,7 +70,7 @@ export default function SearchField(props: SearchFieldProps) {
     }, [searchRef, props.options, props.value]);
 
     return (
-        <div className="relative" ref={searchRef}>
+        <div className="relative w-full" ref={searchRef}>
             <label htmlFor={props.label} className="text-gray-600">
                 {props.label}
                 {props.required && <sup className="text-teal-500">*</sup>}
