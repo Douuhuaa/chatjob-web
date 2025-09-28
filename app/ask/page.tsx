@@ -3,61 +3,18 @@
 import { useState, useRef, useMemo, useCallback, useEffect } from "react";
 import clsx from "clsx";
 
-import SidePanel from "../components/side-panel";
-import SearchField from "../components/search-field";
+import SidePanel from "@/components/side-panel";
+import SearchField from "@/components/search-field";
 
-import CloseIcon from "../components/icons/close.svg";
-import SubmitIcon from "../components/icons/submit.svg";
+import CloseIcon from "@/components/icons/close.svg";
+import SubmitIcon from "@/components/icons/submit.svg";
 
-// TODO:串接API
-const MOCK_COMPANIES = [
-    "Google",
-    "Facebook",
-    "亞馬遜",
-    "Apple",
-    "微軟",
-    "Netflix",
-    "特斯拉",
-    "英特爾",
-    "聯發科",
-    "台積電",
-];
-const MOCK_DEPARTMENTS = [
-    "Engineering Team",
-    "設計團隊",
-    "產品團隊",
-    "Marketing Team",
-    "客戶成功團隊",
-    "Operations Team",
-    "成長團隊",
-    "Data Team",
-    "人資團隊",
-    "財務團隊",
-];
-const MOCK_POSITIONS = [
-    "Front-End Engineer",
-    "UI/UX 設計師",
-    "產品經理",
-    "Digital Marketing Specialist",
-    "人力資源專員",
-    "Data Engineer",
-    "Back-End Engineer",
-    "Account Manager",
-    "營運專員",
-    "QA Engineer",
-];
-const MOCK_QUESTIONS = [
-    { key: 1, value: "這個職缺的面試流程是什麼？" },
-    { key: 2, value: "這個職位的日常職務與首要任務有哪些？" },
-    { key: 3, value: "公司對新員工的短期與長期目標？" },
-    { key: 4, value: "這個職位在公司的升遷及發展路徑為何？" },
-    { key: 5, value: "公司如何評估這個職位員工的表現？" },
-    { key: 6, value: "公司文化與工作氛圍怎麼樣？" },
-    { key: 7, value: "團隊目前有多少人？核心價值是什麼？" },
-    { key: 8, value: "公司的願景、使命和價值觀是什麼？" },
-    { key: 9, value: "公司今年和接下來的目標是什麼？" },
-    { key: 10, value: "這個職位需要具備哪些核心能力？" },
-];
+import {
+    MOCK_COMPANIES,
+    MOCK_DEPARTMENTS,
+    MOCK_POSITIONS,
+    MOCK_QUESTIONS,
+} from "constants/mock-data";
 
 const MAX_HEIGHT = 160;
 
@@ -66,28 +23,28 @@ export default function AskPage() {
     const [department, setDepartment] = useState("");
     const [position, setPosition] = useState("");
     const [manualQuestion, setManualQuestion] = useState("");
-    const [selectedQuestionKeys, setSelectedQuestionKeys] = useState<number[]>([]);
+    const [selectedQuestions, setSelectedQuestions] = useState<string[]>([]);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const availableQuestions = MOCK_QUESTIONS.filter(
-        (option) => !selectedQuestionKeys.includes(option.key),
+        (question) => !selectedQuestions.includes(question),
     );
 
     const isSubmitDisabled = useMemo(() => {
-        const hasQuestion = manualQuestion.trim() !== "" || selectedQuestionKeys.length > 0;
+        const hasQuestion = manualQuestion.trim() !== "" || selectedQuestions.length > 0;
         return company.trim() == "" || position.trim() == "" || !hasQuestion;
-    }, [company, position, manualQuestion, selectedQuestionKeys]);
+    }, [company, position, manualQuestion, selectedQuestions]);
 
-    const handleToggleQuestion = useCallback((key: number) => {
-        setSelectedQuestionKeys((prev) =>
-            prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key],
+    const handleToggleQuestion = useCallback((question: string) => {
+        setSelectedQuestions((prev) =>
+            prev.includes(question) ? prev.filter((q) => q !== question) : [...prev, question],
         );
         // TODO:新增動畫效果
     }, []);
 
-    const handleRemoveQuestion = useCallback((key: number) => {
-        setSelectedQuestionKeys((prev) => prev.filter((k) => k !== key));
+    const handleRemoveQuestion = useCallback((question: string) => {
+        setSelectedQuestions((prev) => prev.filter((q) => q !== question));
         // TODO:新增動畫效果
     }, []);
 
@@ -98,16 +55,10 @@ export default function AskPage() {
             department,
             position,
             manualQuestion,
-            selectedQuestionKeys,
+            selectedQuestions,
         });
         // TODO:處理表單提交邏輯
     };
-
-    const selectedQuestions = useMemo(() => {
-        // https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Set
-        const keySet = new Set(selectedQuestionKeys);
-        return MOCK_QUESTIONS.filter((option) => keySet.has(option.key));
-    }, [selectedQuestionKeys]);
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -165,14 +116,14 @@ export default function AskPage() {
                         >
                             <div className="flex flex-wrap gap-1">
                                 {selectedQuestions.length > 0 &&
-                                    selectedQuestions.map((option) => (
+                                    selectedQuestions.map((question, index) => (
                                         <span
-                                            key={option.key}
+                                            key={index}
                                             className="flex items-center gap-1 rounded-full bg-teal-100 px-2 py-1 text-sm text-teal-600"
                                         >
-                                            {option.value}
+                                            {question}
                                             <button
-                                                onClick={() => handleRemoveQuestion(option.key)}
+                                                onClick={() => handleRemoveQuestion(question)}
                                                 type="button"
                                                 className="text-teal-300 hover:text-teal-600"
                                             >
@@ -209,10 +160,10 @@ export default function AskPage() {
                     <div className="flex flex-col gap-1 text-gray-500">
                         <p className="">常問問題</p>
                         <div className="flex w-full flex-nowrap gap-4 overflow-x-auto">
-                            {availableQuestions.map((option) => (
+                            {availableQuestions.map((question, index) => (
                                 <button
-                                    key={option.key}
-                                    onClick={() => handleToggleQuestion(option.key)}
+                                    key={index}
+                                    onClick={() => handleToggleQuestion(question)}
                                     type="button"
                                     className={clsx(
                                         "w-40 flex-shrink-0 rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm transition-colors",
@@ -220,7 +171,7 @@ export default function AskPage() {
                                         "active:border-teal-500 active:bg-teal-50 active:text-teal-500",
                                     )}
                                 >
-                                    {option.value}
+                                    {question}
                                 </button>
                             ))}
                         </div>
