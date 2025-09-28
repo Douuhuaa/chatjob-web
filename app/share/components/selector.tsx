@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 
-import ArrowDownIcon from "@/components/icons/arrow-down.svg";
+import ArrowDownIcon from "/components/icons/arrow-down.svg";
 
 interface SelectorProps {
     label: string;

@@ -3,11 +3,11 @@
 import { useState, useRef, useMemo, useCallback, useEffect } from "react";
 import clsx from "clsx";
 
-import SidePanel from "@/components/side-panel";
-import SearchField from "@/components/search-field";
+import SearchField from "components/search-field";
+import SidePanel from "components/side-panel";
 
-import CloseIcon from "@/components/icons/close.svg";
-import SubmitIcon from "@/components/icons/submit.svg";
+import CloseIcon from "/components/icons/close.svg";
+import SubmitIcon from "/components/icons/submit.svg";
 
 import {
     MOCK_COMPANIES,

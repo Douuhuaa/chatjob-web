@@ -2,11 +2,11 @@
 
 import { useState, useRef, useMemo, useEffect } from "react";
 
-import Button from "@/components/button";
+import Button from "components/button";
 
-import CalenderIcon from "@/components/icons/calendar.svg";
-import ArrowLeftIcon from "@/components/icons/arrow-left.svg";
-import ArrowRightIcon from "@/components/icons/arrow-right.svg";
+import ArrowLeftIcon from "/components/icons/arrow-left.svg";
+import ArrowRightIcon from "/components/icons/arrow-right.svg";
+import CalenderIcon from "/components/icons/calendar.svg";
 
 interface DateValue {
     year: number | null;
