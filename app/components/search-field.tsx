@@ -70,7 +70,7 @@ export default function SearchField(props: SearchFieldProps) {
     }, [searchRef, props.options, props.value]);
 
     return (
-        <div className="relative" ref={searchRef}>
+        <div className="relative w-full" ref={searchRef}>
             <label htmlFor={props.label} className="text-gray-600">
                 {props.label}
                 {props.required && <sup className="text-teal-500">*</sup>}
@@ -103,6 +103,7 @@ export default function SearchField(props: SearchFieldProps) {
                             filteredOptions.map((item) => (
                                 <button
                                     key={item}
+                                    type="button"
                                     onClick={() => handleFilteredOptionClick(item)}
                                     className="rounded-lg px-2 py-1.5 text-left text-gray-600 hover:bg-gray-100 active:bg-teal-100"
                                 >
@@ -111,6 +112,7 @@ export default function SearchField(props: SearchFieldProps) {
                             ))}
 
                         <button
+                            type="button"
                             onClick={handleAddButtonClick}
                             className="flex items-center rounded-lg px-2 py-1.5 text-teal-500 hover:text-teal-600 active:text-teal-700"
                         >
