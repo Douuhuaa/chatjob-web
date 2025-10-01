@@ -80,14 +80,14 @@ export default function DateSelector(props: DateSelectorProps) {
                 <input
                     id="date-selector"
                     name="date-selector"
-                    placeholder="選擇年份、月份"
                     value={formattedDate}
-                    required
+                    // required
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     // readOnly 會不能觸發 required，因此設置 onKeyDown, onInput 不讓使用者輸入
                     onKeyDown={(e) => e.preventDefault()}
                     onInput={(e) => e.preventDefault()}
                     autoComplete="off"
+                    placeholder="選擇年份、月份"
                     className="peer w-full cursor-pointer rounded-full border border-gray-400 bg-white p-3 pr-10 caret-transparent focus:border-teal-500 focus:outline-none"
                 />
 
