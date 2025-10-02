@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "assets/globals.css";
 
 // 字體會自動 prefetch、優化加載(優於 import, link 載入)
 const inter = Inter({ subsets: ["latin"] });

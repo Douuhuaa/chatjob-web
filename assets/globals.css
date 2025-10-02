@@ -16,7 +16,7 @@ body {
 }
 
 body {
-    @apply min-h-screen bg-gradient-to-b from-white to-teal-50;
+    @apply bg-gradient-to-b from-white to-teal-50;
 }
 
 a {
