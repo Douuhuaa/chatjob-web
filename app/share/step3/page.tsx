@@ -6,7 +6,6 @@ import clsx from "clsx";
 
 import Button from "components/button";
 
-import Layout from "../components/layout";
 import Selector from "../components/selector";
 
 import AddIcon from "/components/icons/add.svg";
@@ -19,6 +18,7 @@ export default function SharePage() {
     const router = useRouter();
 
     const [question, setQuestion] = useState({ type: "", content: "" });
+    // TODO: 新增 state 儲存所有 question
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -26,14 +26,21 @@ export default function SharePage() {
         return question.type.trim() == "" || question.content.trim() == "";
     }, [question]);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-
+    const handleAddQuestion = () => {
         console.log({
             question,
         });
 
-        // TODO: 跳出成功 dialog 並且清空表單
+        // TODO: 把 question 加到所有 question 的 state 裡面
+
+        setQuestion({ type: "", content: "" });
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // TODO: 儲存完整 question 到 context
+        // TODO: 跳轉成功頁
     };
 
     const handleBackClick = () => {
@@ -48,17 +55,8 @@ export default function SharePage() {
         }
     }, [question.content]);
 
-    const buttons = (
-        <>
-            <Button type="button" variant="secondary" onClick={handleBackClick}>
-                上一步
-            </Button>
-            <Button type="submit">分享</Button>
-        </>
-    );
-
     return (
-        <Layout step={3} buttons={buttons} onSubmit={handleSubmit}>
+        <form className="flex w-full flex-col items-center gap-16" onSubmit={handleSubmit}>
             <div className="flex w-full gap-5">
                 <div className="w-1/4">
                     <Selector
@@ -75,6 +73,7 @@ export default function SharePage() {
                         <textarea
                             ref={textareaRef}
                             placeholder="輸入內容..."
+                            value={question.content}
                             onChange={(e) =>
                                 setQuestion({
                                     ...question,
@@ -87,6 +86,7 @@ export default function SharePage() {
                         <button
                             type="button"
                             disabled={isAddQuestionDisabled}
+                            onClick={handleAddQuestion}
                             className="disabled:pointer-events-none"
                         >
                             <AddIcon
@@ -101,6 +101,13 @@ export default function SharePage() {
                     </div>
                 </div>
             </div>
-        </Layout>
+
+            <div className="flex w-full justify-end gap-2">
+                <Button type="button" variant="secondary" onClick={handleBackClick}>
+                    上一步
+                </Button>
+                <Button type="submit">分享</Button>
+            </div>
+        </form>
     );
 }
