@@ -18,7 +18,7 @@ import {
 
 const MAX_HEIGHT = 160;
 
-export default function AskPage() {
+export default function QuestionNewPage() {
     const [company, setCompany] = useState("");
     const [department, setDepartment] = useState("");
     const [position, setPosition] = useState("");
@@ -50,6 +50,7 @@ export default function AskPage() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         console.log({
             company,
             department,
@@ -57,7 +58,12 @@ export default function AskPage() {
             manualQuestion,
             selectedQuestions,
         });
-        // TODO:處理表單提交邏輯
+
+        setCompany("");
+        setDepartment("");
+        setPosition("");
+        setManualQuestion("");
+        setSelectedQuestions([]);
     };
 
     useEffect(() => {
@@ -71,6 +77,7 @@ export default function AskPage() {
     return (
         <div className="flex h-full">
             <SidePanel />
+
             <div className="flex flex-1 items-center justify-center">
                 <div className="flex w-[704px] flex-col gap-16">
                     <div className="flex flex-col gap-5 text-center">
@@ -108,6 +115,7 @@ export default function AskPage() {
                                 options={MOCK_POSITIONS}
                             />
                         </div>
+
                         <div
                             className={clsx(
                                 "relative flex w-full flex-col rounded-3xl border border-gray-400 bg-white p-3 focus-within:border-teal-500",
@@ -132,6 +140,7 @@ export default function AskPage() {
                                         </span>
                                     ))}
                             </div>
+
                             <textarea
                                 ref={textareaRef}
                                 placeholder="輸入問題"
@@ -140,6 +149,7 @@ export default function AskPage() {
                                 className="w-full resize-none bg-transparent pr-10 focus:outline-none"
                                 rows={1}
                             />
+
                             <button
                                 type="submit"
                                 disabled={isSubmitDisabled}
@@ -159,6 +169,7 @@ export default function AskPage() {
 
                     <div className="flex flex-col gap-1 text-gray-500">
                         <p className="">常問問題</p>
+
                         <div className="flex w-full flex-nowrap gap-4 overflow-x-auto">
                             {availableQuestions.map((question, index) => (
                                 <button

@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="zh-Hant-TW" className={inter.className}>
-            <body className="p-5">{children}</body>
+            <body>{children}</body>
         </html>
     );
 }
