@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 import Button from "components/button";
 
-import Selector from "../../components/selector";
+import Selector from "../../../../components/selector";
 
 import AddIcon from "/components/icons/add.svg";
 

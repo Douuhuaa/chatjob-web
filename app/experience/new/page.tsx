@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Button from "components/button";
 import SearchField from "components/search-field";
 
-import DateSelector from "../components/date-selector";
+import DateSelector from "../../../components/date-selector";
 
 import { MOCK_COMPANIES, MOCK_DEPARTMENTS, MOCK_POSITIONS } from "constants/mock-data";
 
