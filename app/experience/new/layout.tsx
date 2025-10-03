@@ -3,7 +3,7 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 
-import StepBar from "./components/step-bar";
+import StepBar from "../components/step-bar";
 
 import SidePanel from "components/side-panel";
 

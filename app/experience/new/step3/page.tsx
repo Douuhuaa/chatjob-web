@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 import Button from "components/button";
 
-import Selector from "../components/selector";
+import Selector from "../../components/selector";
 
 import AddIcon from "/components/icons/add.svg";
 
@@ -14,7 +14,7 @@ import { MOCK_TYPES } from "constants/mock-data";
 
 const MAX_HEIGHT = 80;
 
-export default function SharePage() {
+export default function ExperienceThirdStepPage() {
     const router = useRouter();
 
     const [question, setQuestion] = useState({ type: "", content: "" });
@@ -44,7 +44,7 @@ export default function SharePage() {
     };
 
     const handleBackClick = () => {
-        router.push("/share/step2");
+        router.push("/experience/new/step2");
     };
 
     useEffect(() => {

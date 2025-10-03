@@ -18,7 +18,7 @@ const navLinks = [
     },
     {
         label: "分享面試心得",
-        href: "/share",
+        href: "/experience/new",
         icon: ShareIcon,
     },
 ];

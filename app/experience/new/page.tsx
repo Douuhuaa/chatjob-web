@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 import Button from "components/button";
 import SearchField from "components/search-field";
 
-import DateSelector from "./components/date-selector";
+import DateSelector from "../components/date-selector";
 
 import { MOCK_COMPANIES, MOCK_DEPARTMENTS, MOCK_POSITIONS } from "constants/mock-data";
 
-export default function SharePage() {
+export default function ExperiencePage() {
     const [company, setCompany] = useState("");
     const [department, setDepartment] = useState("");
     const [position, setPosition] = useState("");
@@ -30,7 +30,7 @@ export default function SharePage() {
 
         // TODO: 儲存到 context
 
-        router.push("/share/step2");
+        router.push("/experience/new/step2");
     };
 
     return (

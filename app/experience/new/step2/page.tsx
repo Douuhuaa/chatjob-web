@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 import Button from "components/button";
 
-import Selector from "../components/selector";
+import Selector from "../../components/selector";
 
 import AddIcon from "/components/icons/add.svg";
 
@@ -19,7 +19,7 @@ import {
 
 const MAX_HEIGHT = 80;
 
-export default function SharePage() {
+export default function ExperienceSecondStepPage() {
     const [process, setProcess] = useState({
         stage: "",
         interviewer: "",
@@ -64,11 +64,11 @@ export default function SharePage() {
 
         // TODO: 儲存完整 process 到 context
 
-        router.push("/share/step3");
+        router.push("/experience/new/step3");
     };
 
     const handleBackClick = () => {
-        router.push("/share");
+        router.push("/experience/new");
     };
 
     useEffect(() => {
