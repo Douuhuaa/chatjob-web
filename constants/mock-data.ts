@@ -172,3 +172,113 @@ export const MOCK_LANGUAGES = ["中文", "英文"];
 export const MOCK_DIFFICULTIES = ["簡單", "普通", "困難"];
 
 export const MOCK_TYPES = ["行為題", "情境題", "技術題"];
+
+export const MOCK_EXPERIENCES = [
+    {
+        id: "550e8400-e29b-41d4-a716-446655440001",
+        company: "Google",
+        department: "Engineering",
+        position: "Software Engineer",
+        date: "2025-10-01",
+        stages: [
+            {
+                stage: "第一關",
+                interviewer: "人資專員",
+                language: "中文",
+                difficulty: "簡單",
+                content:
+                    "主要詢問自我介紹、求職動機、薪資期待與工作地點彈性，並了解過往的工作經驗與離職原因。",
+            },
+            {
+                stage: "第二關",
+                interviewer: "資深同事",
+                language: "中文",
+                difficulty: "普通",
+                content:
+                    "考察 JavaScript/React 技術能力與實作題，並針對 API 串接、效能優化及程式設計思路進行深入提問。",
+            },
+            {
+                stage: "第三關",
+                interviewer: "直屬主管",
+                language: "英文",
+                difficulty: "困難",
+                content: "深入探討專案經驗、團隊合作與領導能力。",
+            },
+        ],
+        questions: [
+            {
+                type: "技術題",
+                content: "解釋 this 在 JavaScript 裡的運作方式。",
+            },
+            {
+                type: "技術題",
+                content: "請說明 == 和 === 的差別，並舉例。",
+            },
+            {
+                type: "技術題",
+                content: "瀏覽器渲染流程是什麼？從 HTML 解析到畫面出來的過程請簡述。",
+            },
+            {
+                type: "技術題",
+                content: "解釋一下 React Hook 的規則，為什麼 Hook 不能放在條件判斷裡？",
+            },
+            {
+                type: "情境題",
+                content:
+                    "請描述如何使用 React 曾經遇過 PM 要求快速上線但技術債很重，你會怎麼處理？",
+            },
+        ],
+        createdAt: "2025-10-05",
+    },
+    {
+        id: "550e8400-e29b-41d4-a716-446655440002",
+        company: "Facebook",
+        department: "Engineering",
+        position: "Software Engineer",
+        date: "2025-01-20",
+        stages: [
+            {
+                stage: "第一關",
+                interviewer: "人資專員",
+                language: "中文",
+                difficulty: "簡單",
+                content:
+                    "主要詢問自我介紹、求職動機、薪資期待與工作地點彈性，並了解過往的工作經驗與離職原因。",
+            },
+            {
+                stage: "第二關",
+                interviewer: "資深同事",
+                language: "英文",
+                difficulty: "普通",
+                content:
+                    "考察 JavaScript/React 技術能力與實作題，並針對 API 串接、效能優化及程式設計思路進行深入提問。",
+            },
+        ],
+        questions: [],
+        createdAt: "2025-01-28",
+    },
+    {
+        id: "550e8400-e29b-41d4-a716-446655440003",
+        company: "Amazon",
+        department: "Engineering",
+        position: "Software Engineer",
+        date: "2025-03-17",
+        stages: [
+            {
+                stage: "第一關",
+                interviewer: "人資專員",
+                language: "中文",
+                difficulty: "簡單",
+                content:
+                    "主要詢問自我介紹、求職動機、薪資期待與工作地點彈性，並了解過往的工作經驗與離職原因。",
+            },
+        ],
+        questions: [
+            {
+                type: "行為題",
+                content: "請描述如何處理專案中遇到的技術難題。",
+            },
+        ],
+        createdAt: "2025-04-17",
+    },
+];
