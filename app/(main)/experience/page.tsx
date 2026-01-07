@@ -5,13 +5,13 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useState, useEffect, use } from "react";
 
 import Button from "@/components/button";
-import { MOCK_EXPERIENCES, type Experience } from "@/constants/mock-experiences";
+import { EXPERIENCES, type Experience } from "@/mocks/experiences";
 
 import SortIcon from "/components/icons/sort.svg";
 
 const PAGE_SIZE = 8;
 
-export default function ExperienceListPage() {
+export default function ExperiencePage() {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -23,7 +23,7 @@ export default function ExperienceListPage() {
 
     useEffect(() => {
         // TODO: call API
-        setExperiences(MOCK_EXPERIENCES);
+        setExperiences(EXPERIENCES);
     }, []);
 
     useEffect(() => {
@@ -74,7 +74,7 @@ export default function ExperienceListPage() {
                         {list.map((item) => (
                             <Link
                                 key={item.id}
-                                href={`/experience/list/${item.id}`}
+                                href={`/experience/${item.id}`}
                                 className="grid cursor-pointer grid-cols-4 border-b border-gray-300 py-3 text-center text-sm text-gray-600 hover:text-teal-400"
                             >
                                 <p>{item.company}</p>

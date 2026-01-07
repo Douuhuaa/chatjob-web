@@ -1,9 +1,6 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
-
-import ListIcon from "./icons/list.svg";
 
 export default function UserMenu() {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -29,7 +26,7 @@ export default function UserMenu() {
     };
 
     return (
-        <div className="relative px-5 pb-5" ref={userMenuRef}>
+        <div className="relative mx-3 pb-5" ref={userMenuRef}>
             <button
                 type="button"
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
@@ -43,16 +40,7 @@ export default function UserMenu() {
             </button>
 
             {isUserMenuOpen && (
-                <div className="absolute bottom-full mb-2 w-full rounded-lg border border-gray-200 bg-white p-2 shadow-md">
-                    <Link
-                        href="/experience/list"
-                        onClick={() => setIsUserMenuOpen(false)}
-                        className="flex w-full items-center gap-2 rounded-lg p-2 text-sm text-gray-600 hover:bg-teal-50 active:bg-teal-100/75"
-                    >
-                        <ListIcon className="h-4 w-4" />
-                        <span>已分享的心得</span>
-                    </Link>
-
+                <div className="absolute bottom-full left-0 right-0 mb-2 rounded-lg border border-gray-200 bg-white p-2 shadow-md">
                     <button
                         type="button"
                         onClick={handleLogout}

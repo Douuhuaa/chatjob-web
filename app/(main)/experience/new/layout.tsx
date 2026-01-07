@@ -3,7 +3,7 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 
-import StepBar from "@/components/step-bar";
+import StepBar from "./_components/step-bar";
 
 import { STEPS } from "@/constants/steps";
 

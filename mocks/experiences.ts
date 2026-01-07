@@ -22,7 +22,7 @@ export interface Experience {
     createdAt: string;
 }
 
-export const MOCK_EXPERIENCES: Experience[] = [
+export const EXPERIENCES: Experience[] = [
     {
         id: "550e8400-e29b-41d4-a716-446655440001",
         company: "Google",

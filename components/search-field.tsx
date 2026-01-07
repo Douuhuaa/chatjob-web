@@ -1,10 +1,10 @@
-import { useState, useRef, useMemo, useCallback, useEffect, forwardRef } from "react";
+import { useState, forwardRef, useMemo } from "react";
 import clsx from "clsx";
 
 import SearchIcon from "./icons/search.svg";
 import AddIcon from "./icons/add.svg";
 
-interface SearchFieldProps {
+interface Props {
     label: string;
     value: string;
     onValueChange: (value: string) => void;
@@ -15,23 +15,27 @@ interface SearchFieldProps {
     onClick?: () => void;
 }
 
-const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>((props, ref) => {
+const SearchField = forwardRef<HTMLInputElement, Props>((props, ref) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isComposing, setIsComposing] = useState(false);
 
-    const handleOptionClick = useCallback(
-        (item: string) => {
-            props.onValueChange(item);
-            setIsDropdownOpen(false);
-        },
-        [props.onValueChange],
-    );
+    const filteredOptions = useMemo(() => {
+        if (!props.value) {
+            return props.options;
+        }
+        return props.options.filter((option) => option.toLowerCase().includes(props.value.toLowerCase()));
+    }, [props.options, props.value]);
 
-    const handleAddClick = useCallback(() => {
+    const handleOptionClick = (item: string) => {
+        props.onValueChange(item);
+        setIsDropdownOpen(false);
+    };
+
+    const handleAddClick = () => {
         setIsDropdownOpen(false);
 
         // TODO:打開新增項目的dialog
-    }, []);
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         props.onValueChange(e.target.value);
@@ -102,7 +106,7 @@ const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>((props, ref) 
             {!isComposing && isDropdownOpen && !props.disabled && (
                 <div className="absolute z-10 mt-1 w-full rounded-lg border border-gray-400 bg-white shadow-lg">
                     <div className="flex max-h-60 flex-col gap-1 overflow-auto p-2">
-                        {props.options.map((item) => (
+                        {filteredOptions.map((item) => (
                             <button
                                 key={item}
                                 type="button"

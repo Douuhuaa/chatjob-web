@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 
 import Button from "components/button";
 
-import { MOCK_EXPERIENCES, type Experience } from "@/constants/mock-experiences";
+import { EXPERIENCES, type Experience } from "@/mocks/experiences";
 import clsx from "clsx";
 
 export default function ExperienceDetailPage() {
@@ -21,7 +21,7 @@ export default function ExperienceDetailPage() {
 
     useEffect(() => {
         // TODO: call API
-        setExperiences(MOCK_EXPERIENCES);
+        setExperiences(EXPERIENCES);
     }, []);
 
     if (!experience) {
@@ -37,7 +37,7 @@ export default function ExperienceDetailPage() {
                     </h1>
                     <p>{experience.createdAt}</p>
                 </div>
-                <Button variant="secondary" onClick={() => router.push("/experience/list")}>
+                <Button variant="secondary" onClick={() => router.push("/experience")}>
                     返回
                 </Button>
             </div>

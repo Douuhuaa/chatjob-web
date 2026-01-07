@@ -9,55 +9,36 @@ import Selector from "@/components/selector";
 
 import AddIcon from "@/components/icons/add.svg";
 
-import { MOCK_STAGES, MOCK_ROLES, MOCK_LANGUAGES, MOCK_DIFFICULTIES } from "@/constants/mock-experience-options";
+import { TYPES } from "@/constants/experience-options";
 
 const MAX_HEIGHT = 80;
 
-export default function ExperienceSecondStepPage() {
-    const [form, setForm] = useState({
-        stage: "",
-        interviewer: "",
-        language: "",
-        difficulty: "",
-        content: "",
-    });
-
+export default function InterviewQuestionsPage() {
     const router = useRouter();
+
+    const [form, setForm] = useState({ type: "", content: "" });
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const isAddFormDisabled = useMemo(() => {
-        return (
-            form.stage.trim() == "" ||
-            form.interviewer.trim() == "" ||
-            form.language.trim() == "" ||
-            form.difficulty.trim() == "" ||
-            form.content.trim() == ""
-        );
+        return form.type.trim() == "" || form.content.trim() == "";
     }, [form]);
 
     const handleAddForm = () => {
         // TODO: 儲存value到store
 
-        setForm({
-            stage: "",
-            interviewer: "",
-            language: "",
-            difficulty: "",
-            content: "",
-        });
+        setForm({ type: "", content: "" });
     };
 
-    const handleNextClick = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         // TODO: 儲存完整 form 到 context
-
-        router.push("/experience/new/step3");
+        // TODO: 跳轉成功頁
     };
 
     const handleBackClick = () => {
-        router.push("/experience/new");
+        router.push("/experience/new/step-2");
     };
 
     useEffect(() => {
@@ -69,51 +50,19 @@ export default function ExperienceSecondStepPage() {
     }, [form.content]);
 
     return (
-        <form className="flex h-full flex-col justify-between" onSubmit={handleNextClick}>
-            <div className="flex flex-col gap-5">
-                <div className="grid grid-cols-4 gap-5">
+        <form className="flex h-full flex-col justify-between" onSubmit={handleSubmit}>
+            <div className="flex w-full gap-5">
+                <div className="w-1/4">
                     <Selector
-                        label="關卡"
-                        value={form.stage}
-                        onValueChange={(value) => setForm({ ...form, stage: value })}
-                        options={MOCK_STAGES}
-                    />
-                    <Selector
-                        label="面試官"
-                        value={form.interviewer}
-                        onValueChange={(value) =>
-                            setForm({
-                                ...form,
-                                interviewer: value,
-                            })
-                        }
-                        options={MOCK_ROLES}
-                    />
-                    <Selector
-                        label="語言"
-                        value={form.language}
-                        onValueChange={(value) =>
-                            setForm({
-                                ...form,
-                                language: value,
-                            })
-                        }
-                        options={MOCK_LANGUAGES}
-                    />
-                    <Selector
-                        label="難度"
-                        value={form.difficulty}
-                        onValueChange={(value) =>
-                            setForm({
-                                ...form,
-                                difficulty: value,
-                            })
-                        }
-                        options={MOCK_DIFFICULTIES}
+                        label="類型"
+                        value={form.type}
+                        onValueChange={(value) => setForm({ ...form, type: value })}
+                        options={TYPES}
                     />
                 </div>
-                <div className="flex flex-col">
-                    <label className="text-gray-600">流程摘要 / 面試情境描述</label>
+
+                <div className="flex flex-1 flex-col">
+                    <label className="text-gray-600">問題</label>
                     <div className="flex gap-2">
                         <textarea
                             ref={textareaRef}
@@ -153,7 +102,7 @@ export default function ExperienceSecondStepPage() {
                 <Button type="button" variant="secondary" onClick={handleBackClick}>
                     上一步
                 </Button>
-                <Button type="submit">下一步</Button>
+                <Button type="submit">分享</Button>
             </div>
         </form>
     );

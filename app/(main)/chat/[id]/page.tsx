@@ -6,15 +6,15 @@ import { useState, useRef, useMemo, useEffect } from "react";
 import SubmitIcon from "/components/icons/submit.svg";
 
 import { useParams } from "next/navigation";
-import { MOCK_CHATS, type Chats } from "@/constants/mock-chats";
+import { CHATS, type Chat } from "@/mocks/chats";
 
 const MAX_HEIGHT = 160;
 
-export default function QuestionDetailPage() {
+export default function ChatPage() {
     const params = useParams();
     const recordId = params.id;
 
-    const [chats, setChats] = useState<Chats | null>();
+    const [selectedChat, setSelectedChat] = useState<Chat | null>();
     const [value, setValue] = useState("");
     const [textareaHeight, setTextareaHeight] = useState(0);
 
@@ -22,9 +22,9 @@ export default function QuestionDetailPage() {
 
     useEffect(() => {
         // TODO: call API
-        const chat = MOCK_CHATS.find((c) => c.id === recordId);
+        const chat = CHATS.find((c) => c.id === recordId);
 
-        setChats(chat);
+        setSelectedChat(chat);
     }, [recordId]);
 
     const isSubmitDisabled = useMemo(() => {
@@ -49,7 +49,7 @@ export default function QuestionDetailPage() {
         }
     }, [value]);
 
-    if (!chats) {
+    if (!selectedChat) {
         return null;
     }
 
@@ -59,7 +59,7 @@ export default function QuestionDetailPage() {
                 <div className="py-10" style={{ paddingBottom: `${textareaHeight + 48}px` }}>
                     <div className="mx-auto w-[704px]">
                         <div className="flex flex-col gap-10 whitespace-pre-line text-gray-600">
-                            {chats.chat.message.map((item, index) => (
+                            {selectedChat.record.messages.map((item, index) => (
                                 <div key={index} className="flex flex-col gap-10">
                                     <div className="ml-auto flex w-fit max-w-[480px] flex-col gap-2 rounded-3xl bg-gray-100 px-4 py-2">
                                         {item.options.map((item, index) => {
@@ -106,7 +106,8 @@ export default function QuestionDetailPage() {
                         <SubmitIcon
                             className={clsx("h-8 w-8 rounded-full p-1", {
                                 "pointer-events-none bg-gray-100 text-gray-200": isSubmitDisabled,
-                                "cursor-pointer bg-teal-950 text-gray-50 hover:bg-teal-400 active:bg-teal-500": !isSubmitDisabled,
+                                "cursor-pointer bg-teal-950 text-gray-50 hover:bg-teal-400 active:bg-teal-500":
+                                    !isSubmitDisabled,
                             })}
                         />
                     </button>

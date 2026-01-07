@@ -1,88 +1,90 @@
 "use client";
 
-import { useState, useRef, useMemo, useCallback, useEffect } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import clsx from "clsx";
 
 import SearchField from "@/components/search-field";
-
 import CloseIcon from "@/components/icons/close.svg";
 import SubmitIcon from "@/components/icons/submit.svg";
 
-import { MOCK_COMPANIES, MOCK_QUESTIONS, type Company } from "@/constants/mock-company-options";
+import { type Company } from "@/mocks/companies";
 
 const MAX_HEIGHT = 160;
 
-export default function QuestionNewPage() {
+interface Props {
+    companies: Company[];
+    chatOptions: string[];
+}
+
+export default function NewChatForm(props: Props) {
     const [form, setForm] = useState({
         company: "",
-        department: "",
-        position: "",
-        questionInput: "",
-        questionSelect: [] as string[],
+        dept: "",
+        jobTitle: "",
+        chatInput: "",
+        chatSelect: [] as string[],
     });
-    const [allCompanies, setAllCompanies] = useState<Company[]>([]);
-    const [allQuestions, setAllQuestions] = useState<string[]>([]);
-
-    const [companyOptions, setCompanyOptions] = useState<string[]>([]);
-    const [departmentOptions, setDepartmentOptions] = useState<string[]>([]);
-    const [positionOptions, setPositionOptions] = useState<string[]>([]);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const fieldRef = useRef<HTMLInputElement>(null);
+    const companyFieldRef = useRef<HTMLInputElement>(null);
+
+    const companyOptions = useMemo(() => {
+        return props.companies.map((item) => item.name);
+    }, [props.companies]);
+
+    const selectedCompany = useMemo(() => {
+        return props.companies.find((item) => item.name === form.company);
+    }, [props.companies, form.company]);
+
+    const departmentOptions = useMemo(() => {
+        if (!selectedCompany) {
+            return [];
+        }
+
+        return selectedCompany.departments.map((item) => item.name);
+    }, [selectedCompany]);
+
+    const positionOptions = useMemo(() => {
+        if (!selectedCompany) {
+            return [];
+        }
+
+        const selectedDept = selectedCompany.departments.find((item) => item.name === form.dept);
+
+        if (selectedDept) {
+            return selectedDept.positions;
+        } else {
+            return selectedCompany.positions;
+        }
+    }, [form.dept, selectedCompany]);
+
+    const chatOptions = useMemo(() => {
+        return props.chatOptions.filter((item) => !form.chatSelect.includes(item));
+    }, [props.chatOptions, form.chatSelect]);
+
+    const isSubmitDisabled = useMemo(() => {
+        if (!form.company.trim() || !form.jobTitle.trim()) {
+            return true;
+        }
+
+        if (!form.chatInput.trim() && !form.chatSelect.length) {
+            return true;
+        }
+
+        return false;
+    }, [form]);
 
     useEffect(() => {
-        // TODO: call API
-        setAllCompanies(MOCK_COMPANIES);
-        setAllQuestions(MOCK_QUESTIONS);
-    }, []);
+        setForm((prev) => ({ ...prev, dept: "", jobTitle: "" }));
+    }, [selectedCompany]);
 
     useEffect(() => {
-        setCompanyOptions(allCompanies.map(({ company }) => company));
-    }, [allCompanies]);
+        if (!selectedCompany) {
+            return;
+        }
 
-    const questionOptions = useMemo(
-        () => allQuestions.filter((q) => !form.questionSelect.includes(q)),
-        [allQuestions, form.questionSelect],
-    );
-
-    const isSubmitDisabled = useMemo(
-        () =>
-            !form.company.trim() || !form.position.trim() || !(form.questionInput.trim() || form.questionSelect.length),
-        [form],
-    );
-
-    const handleDisabledFieldClick = () => {
-        fieldRef.current?.focus();
-    };
-
-    const toggleQuestionSelect = useCallback((question: string) => {
-        setForm((prev) => {
-            const isSelected = prev.questionSelect.includes(question);
-            const newQuestionSelect = isSelected
-                ? prev.questionSelect.filter((q) => q !== question)
-                : [...prev.questionSelect, question];
-
-            return {
-                ...prev,
-                questionSelect: newQuestionSelect,
-            };
-        });
-    }, []);
-
-    const submit = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        // TODO: call API
-        // TODO: 新增提問紀錄並且直接導連到該提問詳情
-
-        setForm({
-            company: "",
-            department: "",
-            position: "",
-            questionInput: "",
-            questionSelect: [],
-        });
-    };
+        setForm((prev) => ({ ...prev, jobTitle: "" }));
+    }, [form.dept, selectedCompany]);
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -90,42 +92,42 @@ export default function QuestionNewPage() {
             const updatedHeight = Math.min(textareaRef.current.scrollHeight, MAX_HEIGHT);
             textareaRef.current.style.height = `${updatedHeight}px`;
         }
-    }, [form.questionInput]);
+    }, [form.chatInput]);
 
-    const selectedCompany = useMemo(
-        () => allCompanies.find((c) => c.company === form.company),
-        [allCompanies, form.company],
-    );
+    const handleChatOptions = (question: string) => {
+        const isSelected = form.chatSelect.includes(question);
 
-    // 處理公司欄位更新
-    useEffect(() => {
-        if (selectedCompany) {
-            setDepartmentOptions(selectedCompany.departments.map((d) => d.name));
-            setPositionOptions(selectedCompany.positions || []);
-        } else {
-            setDepartmentOptions([]);
-            setPositionOptions([]);
+        const nextChatSelect = isSelected
+            ? form.chatSelect.filter((item) => item !== question)
+            : [...form.chatSelect, question];
+
+        setForm({
+            ...form,
+            chatSelect: nextChatSelect,
+        });
+    };
+
+    const handleDisabledClick = () => {
+        if (!companyFieldRef.current) {
+            return;
         }
-        setForm((prev) => ({ ...prev, department: "", position: "" }));
-    }, [selectedCompany]);
 
-    // 處理部門欄位更新
-    useEffect(() => {
-        if (!selectedCompany) return;
+        companyFieldRef.current.focus();
+    };
 
-        if (form.department) {
-            const selectedDept = selectedCompany.departments.find((d) => d.name === form.department);
-            const newPositions = selectedDept ? selectedDept.positions : [];
-            setPositionOptions(newPositions);
+    const submit = (e: React.FormEvent) => {
+        e.preventDefault();
 
-            if (!newPositions.includes(form.position)) {
-                setForm((prev) => ({ ...prev, position: "" }));
-            }
-        } else {
-            setPositionOptions(selectedCompany.positions || []);
-            setForm((prev) => ({ ...prev, position: "" }));
-        }
-    }, [form.department, selectedCompany]);
+        // TODO: 新增chat -> 更新chat-list -> 直接導連到chat/[id]
+
+        setForm({
+            company: "",
+            dept: "",
+            jobTitle: "",
+            chatInput: "",
+            chatSelect: [],
+        });
+    };
 
     return (
         <div className="flex w-[704px] flex-col justify-between py-24">
@@ -142,7 +144,7 @@ export default function QuestionNewPage() {
                 <form className="flex flex-col gap-5" onSubmit={submit}>
                     <div className="flex gap-5">
                         <SearchField
-                            ref={fieldRef}
+                            ref={companyFieldRef}
                             label="公司"
                             value={form.company}
                             onValueChange={(value) => setForm((prev) => ({ ...prev, company: value }))}
@@ -152,43 +154,43 @@ export default function QuestionNewPage() {
                         />
                         <SearchField
                             label="部門/團隊"
-                            value={form.department}
-                            onValueChange={(value) => setForm((prev) => ({ ...prev, department: value }))}
+                            value={form.dept}
+                            onValueChange={(value) => setForm((prev) => ({ ...prev, dept: value }))}
                             placeholder={form.company ? "搜尋部門/團隊" : "請先選擇公司"}
                             options={departmentOptions}
                             disabled={!form.company}
-                            onClick={!form.company ? handleDisabledFieldClick : undefined}
+                            onClick={!form.company ? handleDisabledClick : undefined}
                         />
                         <SearchField
                             label="職務"
-                            value={form.position}
-                            onValueChange={(value) => setForm((prev) => ({ ...prev, position: value }))}
+                            value={form.jobTitle}
+                            onValueChange={(value) => setForm((prev) => ({ ...prev, jobTitle: value }))}
                             placeholder={form.company ? "搜尋職務" : "請先選擇公司"}
                             options={positionOptions}
                             required={true}
                             disabled={!form.company}
-                            onClick={!form.company ? handleDisabledFieldClick : undefined}
+                            onClick={!form.company ? handleDisabledClick : undefined}
                         />
                     </div>
 
                     <div
                         className={clsx(
                             "relative flex w-full flex-col rounded-3xl border border-gray-400 bg-white p-3 focus-within:border-teal-500",
-                            form.questionSelect.length > 0 && "gap-2",
+                            form.chatSelect.length > 0 && "gap-2",
                         )}
                     >
                         <div className="flex flex-wrap gap-1">
-                            {form.questionSelect.length > 0 &&
-                                form.questionSelect.map((question, index) => (
+                            {form.chatSelect.length > 0 &&
+                                form.chatSelect.map((item, index) => (
                                     <span
                                         key={index}
                                         className="flex items-center gap-1 rounded-full bg-teal-100 px-2 py-1 text-sm text-teal-600"
                                     >
-                                        {question}
+                                        {item}
 
                                         <button
                                             type="button"
-                                            onClick={() => toggleQuestionSelect(question)}
+                                            onClick={() => handleChatOptions(item)}
                                             className="text-teal-300 hover:text-teal-600"
                                         >
                                             <CloseIcon className="h-5 w-5" />
@@ -200,8 +202,8 @@ export default function QuestionNewPage() {
                         <textarea
                             ref={textareaRef}
                             placeholder="輸入問題"
-                            value={form.questionInput}
-                            onChange={(e) => setForm((prev) => ({ ...prev, questionInput: e.target.value }))}
+                            value={form.chatInput}
+                            onChange={(e) => setForm((prev) => ({ ...prev, chatInput: e.target.value }))}
                             className="w-full resize-none bg-transparent pr-10 focus:outline-none"
                             rows={1}
                         />
@@ -223,10 +225,10 @@ export default function QuestionNewPage() {
                 <p className="text-gray-600">常問問題</p>
 
                 <div className="flex w-full flex-nowrap gap-3 overflow-x-auto text-gray-500">
-                    {questionOptions.map((question, index) => (
+                    {chatOptions.map((item, index) => (
                         <button
                             key={index}
-                            onClick={() => toggleQuestionSelect(question)}
+                            onClick={() => handleChatOptions(item)}
                             type="button"
                             className={clsx(
                                 "w-40 flex-shrink-0 rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm transition-colors",
@@ -234,7 +236,7 @@ export default function QuestionNewPage() {
                                 "active:border-teal-500 active:bg-teal-50 active:text-teal-500",
                             )}
                         >
-                            {question}
+                            {item}
                         </button>
                     ))}
                 </div>

@@ -11,10 +11,10 @@ import Selector from "@/components/selector";
 
 import StarIcon from "@/components/icons/star.svg";
 
-import { MOCK_COMPANIES, type Company } from "@/constants/mock-company-options";
-import { MOCK_RESULTS, MOCK_DURATIONS } from "@/constants/mock-experience-options";
+import { COMPANIES, type Company } from "@/mocks/companies";
+import { RESULTS, DURATIONS } from "@/constants/experience-options";
 
-export default function ExperiencePage() {
+export default function CompanyInfoPage() {
     const [form, setForm] = useState({
         company: "",
         department: "",
@@ -38,15 +38,15 @@ export default function ExperiencePage() {
 
     useEffect(() => {
         // TODO: call API
-        setAllCompanies(MOCK_COMPANIES);
+        setAllCompanies(COMPANIES);
     }, []);
 
     useEffect(() => {
-        setCompanyOptions(allCompanies.map(({ company }) => company));
+        setCompanyOptions(allCompanies.map((item) => item.name));
     }, [allCompanies]);
 
     const selectedCompany = useMemo(
-        () => allCompanies.find((c) => c.company === form.company),
+        () => allCompanies.find((item) => item.name === form.company),
         [allCompanies, form.company],
     );
 
@@ -86,7 +86,7 @@ export default function ExperiencePage() {
         // TODO: 儲存value到store
         // TODO: 判斷欄位是否完整
 
-        router.push("/experience/new/step2");
+        router.push("/experience/new/step-2");
     };
 
     const handleDisabledFieldClick = () => {
@@ -184,7 +184,7 @@ export default function ExperiencePage() {
                         onValueChange={(value) =>
                             setForm((prev) => ({ ...prev, interview: { ...prev.interview, result: value } }))
                         }
-                        options={MOCK_RESULTS}
+                        options={RESULTS}
                         disabled={!form.isChecked}
                     />
                     <Selector
@@ -196,7 +196,7 @@ export default function ExperiencePage() {
                                 interview: { ...prev.interview, pendingTime: value },
                             }))
                         }
-                        options={MOCK_DURATIONS}
+                        options={DURATIONS}
                         disabled={!form.isChecked}
                     />
                 </div>
