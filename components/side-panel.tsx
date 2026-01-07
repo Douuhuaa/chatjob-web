@@ -1,39 +1,44 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { usePathname, useParams } from "next/navigation";
+import { type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
-import ExperienceIcon from "./icons/experience.svg";
+import ListIcon from "./icons/list.svg";
 import Logo from "./icons/logo.svg";
 import QuestionIcon from "./icons/question.svg";
+import SearchIcon from "./icons/search.svg";
+import ShareIcon from "./icons/share.svg";
 
-import { MOCK_CHATS, type Chat } from "@/constants/mock-chats";
-
-const navLinks = [
+const navItems = [
     {
         label: "提問",
-        href: "/question/new",
         icon: QuestionIcon,
+        type: "link",
+        href: "/",
+    },
+    {
+        label: "搜尋提問",
+        icon: SearchIcon,
+        type: "action",
     },
     {
         label: "分享面試心得",
+        icon: ShareIcon,
+        type: "link",
         href: "/experience/new",
-        icon: ExperienceIcon,
+    },
+    {
+        label: "面試心得",
+        icon: ListIcon,
+        type: "link",
+        href: "/experience/list",
     },
 ];
 
-export default function SidePanel() {
+export default function SidePanel({ children }: { children: ReactNode }) {
     const pathname = usePathname();
-    const params = useParams();
-
-    const [chats, setChats] = useState<Chat[]>();
-
-    useEffect(() => {
-        // TODO: call API
-        setChats(MOCK_CHATS);
-    }, []);
 
     return (
         <div className="overflow-y-auto">
@@ -44,54 +49,44 @@ export default function SidePanel() {
                 </Link>
 
                 <nav>
-                    {navLinks.map((link) => {
-                        const isActive = pathname.startsWith(link.href);
-                        const Icon = link.icon;
+                    {navItems.map((item) => {
+                        const Icon = item.icon;
+
+                        if (item.type == "action") {
+                            return (
+                                <button
+                                    key={item.label}
+                                    type="button"
+                                    className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-gray-600 hover:bg-teal-50 active:bg-teal-100/75"
+                                    onClick={() => {}}
+                                >
+                                    <Icon className="h-6 w-6" />
+                                    <span>{item.label}</span>
+                                </button>
+                            );
+                        }
 
                         return (
                             <Link
-                                key={link.href}
-                                href={link.href}
+                                key={item.href}
+                                href={item.href}
                                 className={clsx(
                                     "flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm hover:bg-teal-50 active:bg-teal-100/75",
                                     {
-                                        "font-medium text-teal-500": isActive,
-                                        "text-gray-600": !isActive,
+                                        "font-medium text-teal-500": pathname == item.href,
+                                        "text-gray-600": pathname != item.href,
                                     },
                                 )}
                             >
                                 <Icon className="h-6 w-6" />
-                                <span>{link.label}</span>
+                                <span>{item.label}</span>
                             </Link>
                         );
                     })}
                 </nav>
             </div>
 
-            <div className="px-5 pb-5">
-                <label className="px-2 pb-2 text-sm font-light text-gray-400">提問紀錄</label>
-
-                <div className="flex flex-col">
-                    {chats &&
-                        chats.map((item) => (
-                            <Link
-                                key={item.id}
-                                href={`/question/${item.id}`}
-                                className={clsx(
-                                    "truncate rounded-lg p-2 text-sm hover:bg-teal-50 active:bg-teal-100/75",
-                                    {
-                                        "font-medium text-teal-500": params.id == item.id,
-                                        "text-gray-600": params.id != item.id,
-                                    },
-                                )}
-                            >
-                                <span>
-                                    {item.chat.company}｜{item.chat.position}
-                                </span>
-                            </Link>
-                        ))}
-                </div>
-            </div>
+            <div className="px-5 pb-5">{children}</div>
         </div>
     );
 }

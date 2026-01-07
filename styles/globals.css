@@ -16,7 +16,7 @@ body {
 }
 
 body {
-    @apply bg-gradient-to-b from-white to-teal-50;
+    @apply flex bg-gradient-to-b from-white to-teal-50;
 }
 
 a {
