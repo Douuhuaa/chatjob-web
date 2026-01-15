@@ -13,7 +13,7 @@ import { MOCK_STAGES, MOCK_ROLES, MOCK_LANGUAGES, MOCK_DIFFICULTIES } from "@/co
 
 const MAX_HEIGHT = 80;
 
-export default function ExperienceSecondStepPage() {
+export default function InterviewStagesPage() {
     const [form, setForm] = useState({
         stage: "",
         interviewer: "",
@@ -53,7 +53,7 @@ export default function ExperienceSecondStepPage() {
 
         // TODO: 儲存完整 form 到 context
 
-        router.push("/experience/new/step3");
+        router.push("/experience/new/step-3");
     };
 
     const handleBackClick = () => {

@@ -12,7 +12,7 @@ import { MOCK_COMPANIES, MOCK_QUESTIONS, type Company } from "@/constants/mock-c
 
 const MAX_HEIGHT = 160;
 
-export default function QuestionNewPage() {
+export default function RootPage() {
     const [form, setForm] = useState({
         company: "",
         department: "",

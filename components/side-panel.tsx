@@ -33,7 +33,7 @@ const navItems = [
         label: "面試心得",
         icon: ListIcon,
         type: "link",
-        href: "/experience/list",
+        href: "/experience",
     },
 ];
 

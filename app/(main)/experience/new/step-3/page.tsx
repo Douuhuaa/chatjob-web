@@ -13,7 +13,7 @@ import { MOCK_TYPES } from "@/constants/mock-experience-options";
 
 const MAX_HEIGHT = 80;
 
-export default function ExperienceThirdStepPage() {
+export default function InterviewQuestionsPage() {
     const router = useRouter();
 
     const [form, setForm] = useState({ type: "", content: "" });
@@ -38,7 +38,7 @@ export default function ExperienceThirdStepPage() {
     };
 
     const handleBackClick = () => {
-        router.push("/experience/new/step2");
+        router.push("/experience/new/step-2");
     };
 
     useEffect(() => {

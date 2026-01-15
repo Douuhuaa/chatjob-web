@@ -10,7 +10,7 @@ import { MOCK_CHATS, type Chat } from "@/constants/mock-chats";
 
 const MAX_HEIGHT = 160;
 
-export default function QuestionDetailPage() {
+export default function ChatPage() {
     const params = useParams();
     const recordId = params.id;
 

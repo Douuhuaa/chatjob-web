@@ -11,7 +11,7 @@ import SortIcon from "/components/icons/sort.svg";
 
 const PAGE_SIZE = 8;
 
-export default function ExperienceListPage() {
+export default function ExperiencePage() {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -74,7 +74,7 @@ export default function ExperienceListPage() {
                         {list.map((item) => (
                             <Link
                                 key={item.id}
-                                href={`/experience/list/${item.id}`}
+                                href={`/experience/${item.id}`}
                                 className="grid cursor-pointer grid-cols-4 border-b border-gray-300 py-3 text-center text-sm text-gray-600 hover:text-teal-400"
                             >
                                 <p>{item.company}</p>

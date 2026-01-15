@@ -14,7 +14,7 @@ import StarIcon from "@/components/icons/star.svg";
 import { MOCK_COMPANIES, type Company } from "@/constants/mock-company-options";
 import { MOCK_RESULTS, MOCK_DURATIONS } from "@/constants/mock-experience-options";
 
-export default function ExperiencePage() {
+export default function CompanyInfoPage() {
     const [form, setForm] = useState({
         company: "",
         department: "",
@@ -86,7 +86,7 @@ export default function ExperiencePage() {
         // TODO: 儲存value到store
         // TODO: 判斷欄位是否完整
 
-        router.push("/experience/new/step2");
+        router.push("/experience/new/step-2");
     };
 
     const handleDisabledFieldClick = () => {

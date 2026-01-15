@@ -37,7 +37,7 @@ export default function ExperienceDetailPage() {
                     </h1>
                     <p>{experience.createdAt}</p>
                 </div>
-                <Button variant="secondary" onClick={() => router.push("/experience/list")}>
+                <Button variant="secondary" onClick={() => router.push("/experience")}>
                     返回
                 </Button>
             </div>
