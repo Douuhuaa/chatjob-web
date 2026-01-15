@@ -11,7 +11,7 @@ import Selector from "@/components/selector";
 
 import StarIcon from "@/components/icons/star.svg";
 
-import { MOCK_COMPANIES, type Company } from "@/constants/mock-company-options";
+import { COMPANIES, type Company } from "@/mocks/companies";
 import { MOCK_RESULTS, MOCK_DURATIONS } from "@/constants/mock-experience-options";
 
 export default function CompanyInfoPage() {
@@ -38,15 +38,15 @@ export default function CompanyInfoPage() {
 
     useEffect(() => {
         // TODO: call API
-        setAllCompanies(MOCK_COMPANIES);
+        setAllCompanies(COMPANIES);
     }, []);
 
     useEffect(() => {
-        setCompanyOptions(allCompanies.map(({ company }) => company));
+        setCompanyOptions(allCompanies.map((item) => item.name));
     }, [allCompanies]);
 
     const selectedCompany = useMemo(
-        () => allCompanies.find((c) => c.company === form.company),
+        () => allCompanies.find((item) => item.name === form.company),
         [allCompanies, form.company],
     );
 
