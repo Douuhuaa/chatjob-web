@@ -16,7 +16,8 @@ export default async function SidePanelPage() {
     const chats = await getChats();
 
     return (
-        <SidePanel>
+        <SidePanel chats={chats}>
+            <p className="px-2 pb-2 text-sm font-light text-gray-400">提問紀錄</p>
             <ChatList chats={chats} />
         </SidePanel>
     );
