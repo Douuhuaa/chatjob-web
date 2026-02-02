@@ -12,6 +12,7 @@ interface Props {
     options: string[];
     required?: boolean;
     disabled?: boolean;
+    isLoading?: boolean;
     onClick?: () => void;
 }
 
@@ -106,25 +107,31 @@ const SearchField = forwardRef<HTMLInputElement, Props>((props, ref) => {
             {!isComposing && isDropdownOpen && !props.disabled && (
                 <div className="absolute z-10 mt-1 w-full rounded-lg border border-gray-400 bg-white shadow-lg">
                     <div className="flex max-h-60 flex-col gap-1 overflow-auto p-2">
-                        {filteredOptions.map((item) => (
-                            <button
-                                key={item}
-                                type="button"
-                                onClick={() => handleOptionClick(item)}
-                                className="rounded-lg px-2 py-1.5 text-left text-gray-600 hover:bg-gray-100 active:bg-teal-100"
-                            >
-                                {item}
-                            </button>
-                        ))}
+                        {props.isLoading ? (
+                            <div className="px-2 py-1.5 text-left text-gray-400">Loading...</div>
+                        ) : (
+                            <>
+                                {filteredOptions.map((item) => (
+                                    <button
+                                        key={item}
+                                        type="button"
+                                        onClick={() => handleOptionClick(item)}
+                                        className="rounded-lg px-2 py-1.5 text-left text-gray-600 hover:bg-gray-100 active:bg-teal-100"
+                                    >
+                                        {item}
+                                    </button>
+                                ))}
 
-                        <button
-                            type="button"
-                            onClick={handleAddClick}
-                            className="flex items-center rounded-lg px-2 py-1.5 text-teal-500 hover:text-teal-600 active:text-teal-700"
-                        >
-                            <AddIcon className="h-4 w-4" />
-                            <p>新增{props.label}</p>
-                        </button>
+                                <button
+                                    type="button"
+                                    onClick={handleAddClick}
+                                    className="flex items-center rounded-lg px-2 py-1.5 text-teal-500 hover:text-teal-600 active:text-teal-700"
+                                >
+                                    <AddIcon className="h-4 w-4" />
+                                    <p>新增{props.label}</p>
+                                </button>
+                            </>
+                        )}
                     </div>
                 </div>
             )}

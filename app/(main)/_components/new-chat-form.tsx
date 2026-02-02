@@ -7,16 +7,12 @@ import SearchField from "@/components/search-field";
 import CloseIcon from "@/components/icons/close.svg";
 import SubmitIcon from "@/components/icons/submit.svg";
 
-import { type Company } from "@/mocks/companies";
+import { COMPANIES, type Company } from "@/mocks/companies";
+import { SUGGEST_CHATS } from "@/constants/suggest-chats";
 
-const MAX_HEIGHT = 160;
+export default function NewChatForm() {
+    const [companies, setCompanies] = useState<Company[] | null>(null);
 
-interface Props {
-    companies: Company[];
-    chatOptions: string[];
-}
-
-export default function NewChatForm(props: Props) {
     const [form, setForm] = useState({
         company: "",
         dept: "",
@@ -29,24 +25,32 @@ export default function NewChatForm(props: Props) {
     const companyFieldRef = useRef<HTMLInputElement>(null);
 
     const companyOptions = useMemo(() => {
-        return props.companies.map((item) => item.name);
-    }, [props.companies]);
+        if (!companies) {
+            return null;
+        }
+
+        return companies.map((item) => item.name);
+    }, [companies]);
 
     const selectedCompany = useMemo(() => {
-        return props.companies.find((item) => item.name === form.company);
-    }, [props.companies, form.company]);
+        if (!companies) {
+            return null;
+        }
 
-    const departmentOptions = useMemo(() => {
+        return companies.find((item) => item.name === form.company);
+    }, [companies, form.company]);
+
+    const deptOptions = useMemo(() => {
         if (!selectedCompany) {
-            return [];
+            return null;
         }
 
         return selectedCompany.departments.map((item) => item.name);
     }, [selectedCompany]);
 
-    const positionOptions = useMemo(() => {
+    const jobOptions = useMemo(() => {
         if (!selectedCompany) {
-            return [];
+            return null;
         }
 
         const selectedDept = selectedCompany.departments.find((item) => item.name === form.dept);
@@ -59,8 +63,8 @@ export default function NewChatForm(props: Props) {
     }, [form.dept, selectedCompany]);
 
     const chatOptions = useMemo(() => {
-        return props.chatOptions.filter((item) => !form.chatSelect.includes(item));
-    }, [props.chatOptions, form.chatSelect]);
+        return SUGGEST_CHATS.filter((item) => !form.chatSelect.includes(item));
+    }, [SUGGEST_CHATS, form.chatSelect]);
 
     const isSubmitDisabled = useMemo(() => {
         if (!form.company.trim() || !form.jobTitle.trim()) {
@@ -75,22 +79,26 @@ export default function NewChatForm(props: Props) {
     }, [form]);
 
     useEffect(() => {
-        setForm((prev) => ({ ...prev, dept: "", jobTitle: "" }));
-    }, [selectedCompany]);
+        const exe = async () => {
+            // TODO: 串 API
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+            setCompanies(COMPANIES);
+        };
+
+        exe();
+    }, []);
 
     useEffect(() => {
-        if (!selectedCompany) {
-            return;
-        }
+        const textarea = textareaRef.current;
 
-        setForm((prev) => ({ ...prev, jobTitle: "" }));
-    }, [form.dept, selectedCompany]);
+        if (textarea) {
+            textarea.style.height = "auto";
 
-    useEffect(() => {
-        if (textareaRef.current) {
-            textareaRef.current.style.height = "auto";
-            const updatedHeight = Math.min(textareaRef.current.scrollHeight, MAX_HEIGHT);
-            textareaRef.current.style.height = `${updatedHeight}px`;
+            const scrollHeight = textarea.scrollHeight;
+            const updatedHeight = Math.min(scrollHeight, 160);
+
+            textarea.style.height = `${updatedHeight}px`;
+            textarea.style.overflowY = scrollHeight > 160 ? "auto" : "hidden";
         }
     }, [form.chatInput]);
 
@@ -131,7 +139,7 @@ export default function NewChatForm(props: Props) {
 
     return (
         <div className="flex w-[704px] flex-col justify-between py-24">
-            <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-8">
                 <div className="flex flex-col gap-5 text-center">
                     <h1 className="text-3xl font-medium text-gray-800">輸入你的面試相關問題</h1>
                     <p className="text-sm text-gray-400">
@@ -147,17 +155,20 @@ export default function NewChatForm(props: Props) {
                             ref={companyFieldRef}
                             label="公司"
                             value={form.company}
-                            onValueChange={(value) => setForm((prev) => ({ ...prev, company: value }))}
+                            onValueChange={(value) =>
+                                setForm((prev) => ({ ...prev, company: value, dept: "", jobTitle: "" }))
+                            }
                             placeholder="搜尋公司"
                             options={companyOptions}
                             required={true}
+                            isLoading={!companies}
                         />
                         <SearchField
                             label="部門/團隊"
                             value={form.dept}
-                            onValueChange={(value) => setForm((prev) => ({ ...prev, dept: value }))}
+                            onValueChange={(value) => setForm((prev) => ({ ...prev, dept: value, jobTitle: "" }))}
                             placeholder={form.company ? "搜尋部門/團隊" : "請先選擇公司"}
-                            options={departmentOptions}
+                            options={deptOptions}
                             disabled={!form.company}
                             onClick={!form.company ? handleDisabledClick : undefined}
                         />
@@ -166,7 +177,7 @@ export default function NewChatForm(props: Props) {
                             value={form.jobTitle}
                             onValueChange={(value) => setForm((prev) => ({ ...prev, jobTitle: value }))}
                             placeholder={form.company ? "搜尋職務" : "請先選擇公司"}
-                            options={positionOptions}
+                            options={jobOptions}
                             required={true}
                             disabled={!form.company}
                             onClick={!form.company ? handleDisabledClick : undefined}
